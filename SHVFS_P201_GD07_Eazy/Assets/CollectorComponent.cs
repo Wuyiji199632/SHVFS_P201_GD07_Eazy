@@ -11,6 +11,7 @@ namespace HacMan_GD07
         public bool IsInvincible = false;
         public bool IsHealed = false;
         public float Timer;
+        public Pill Pill;
         private LevelGeneratorSystem Generator;
         public GameObject Projectile;
         private Renderer HacmanRenderer;
@@ -64,57 +65,13 @@ namespace HacMan_GD07
         }
         void CheckPills()
         {
-            if(PillsGotten==22&&Generator.Level1IsRunning)
+            Pill = FindObjectOfType<Pill>();
+            if(Pill==null)
             {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");               
-            }
-            if (PillsGotten == 21 && Generator.Leve2IsRunning)
-            {
-                Debug.Log($"Victory!");
+                Debug.Log("Victory!");
                 SceneManager.LoadScene("SampleScene");
             }
-            if (PillsGotten == 21 && Generator.Level3IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 19 && Generator.Level4IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 24 && Generator.Level5IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 25 && Generator.Level6IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 23 && Generator.Level7IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 22 && Generator.Level8IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 19 && Generator.Level9IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-            if (PillsGotten == 19 && Generator.Level10IsRunning)
-            {
-                Debug.Log($"Victory!");
-                SceneManager.LoadScene("SampleScene");
-            }
-
+            
         }
         void TurnOffInvincibility()
         {
