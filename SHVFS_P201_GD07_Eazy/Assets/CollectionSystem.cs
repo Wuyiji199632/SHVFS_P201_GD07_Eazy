@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 namespace HacMan_GD07
 {
     public class CollectionSystem : Singleton<CollectionSystem>
     {
-        
+        public GameObject WinPanel;
+        public GameObject LossPanel;
         // Start is called before the first frame update
         void Start()
         {
-
+            WinPanel.gameObject.SetActive(false);
+            LossPanel.gameObject.SetActive(false);
         }
 
         // Update is called once per frame
@@ -47,7 +50,9 @@ namespace HacMan_GD07
             if(dmg.Collector.PlayerHealth<=0)
             {
                 dmg.Collector.PlayerHealth = 0;
-                SceneManager.LoadScene("SampleScene");               
+                LossPanel.gameObject.SetActive(true);
+                Time.timeScale = 0;
+                            
             }
         }
         private void OnInvincibility(InvincibilityEvent invincibility)

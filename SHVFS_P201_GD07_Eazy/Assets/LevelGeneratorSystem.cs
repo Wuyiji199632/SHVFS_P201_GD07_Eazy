@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 namespace HacMan_GD07
 {
     public class LevelGeneratorSystem : Singleton<LevelGeneratorSystem>
     {
+        public CollectionSystem CollectionSystem;
         public BaseGridObject[] BaseGridObjectPrefabs;
         public bool Level1IsRunning = false;
         public bool Leve2IsRunning = false;
@@ -123,14 +125,55 @@ namespace HacMan_GD07
 
         protected override void Awake()
         {
+            LoadLevel();
+            CollectionSystem = FindObjectOfType<CollectionSystem>();
+
+            //GenerateLevel();
+        }
+        // Start is called before the first frame update
+
+
+
+        // Update is called once per frame
+        void Update()
+        {
+           
+        }
+        public void GenerateLevel(LevelGrid levelgrid)
+        {
+            var gridSizeY = levelgrid.Grid.GetLength(0);
+            var gridSizeX =levelgrid. Grid.GetLength(1);
+            for (var y = 0; y < gridSizeY; y++)
+            {
+                for (var x = 0; x < gridSizeX; x++)
+                {
+                    var objectType =levelgrid.Grid[y, x];
+                    var gridObjectPrefab = BaseGridObjectPrefabs[objectType];
+                    var gridObjectClone = Instantiate(gridObjectPrefab);
+                    gridObjectClone.GridPosition = new IntVector2(x, -y);
+                    gridObjectClone.transform.position = new Vector3(gridObjectClone.GridPosition.x, gridObjectClone.GridPosition.y, 0);
+                }
+            }                      
+        }
+        public void TurnOffPanels()
+        {
+            CollectionSystem.WinPanel.gameObject.SetActive(false);
+            CollectionSystem.LossPanel.gameObject.SetActive(false);
+            SceneManager.LoadScene("SampleScene");
+            
+        }
+        public void LoadLevel()
+        {
             var i = Random.Range(0, 9);
-            if (i == 0) {
+            Time.timeScale = 1;           
+            if (i == 0)
+            {
                 AppDataSystem.Save(new LevelGrid(Grid0), "Level0");
                 var level0 = AppDataSystem.Load<LevelGrid>("Level0");
                 Level1IsRunning = true;
                 GenerateLevel(level0);
             }
-            if(i==1)
+            if (i == 1)
             {
                 AppDataSystem.Save(new LevelGrid(Grid1), "Level1");
                 var level1 = AppDataSystem.Load<LevelGrid>("Level1");
@@ -193,34 +236,6 @@ namespace HacMan_GD07
                 Level10IsRunning = true;
                 GenerateLevel(level9);
             }
-
-
-            //GenerateLevel();
-        }
-        // Start is called before the first frame update
-
-
-
-        // Update is called once per frame
-        void Update()
-        {
-           
-        }
-        private void GenerateLevel(LevelGrid levelgrid)
-        {
-            var gridSizeY = levelgrid.Grid.GetLength(0);
-            var gridSizeX =levelgrid. Grid.GetLength(1);
-            for (var y = 0; y < gridSizeY; y++)
-            {
-                for (var x = 0; x < gridSizeX; x++)
-                {
-                    var objectType =levelgrid.Grid[y, x];
-                    var gridObjectPrefab = BaseGridObjectPrefabs[objectType];
-                    var gridObjectClone = Instantiate(gridObjectPrefab);
-                    gridObjectClone.GridPosition = new IntVector2(x, -y);
-                    gridObjectClone.transform.position = new Vector3(gridObjectClone.GridPosition.x, gridObjectClone.GridPosition.y, 0);
-                }
-            }                      
         }
         [ContextMenu("Log Grid")]
         public void LogGrid()

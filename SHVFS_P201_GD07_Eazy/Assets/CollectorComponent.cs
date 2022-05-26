@@ -13,12 +13,14 @@ namespace HacMan_GD07
         public float Timer;
         public Pill Pill;
         private LevelGeneratorSystem Generator;
+        private CollectionSystem CollectionSystem;
         public GameObject Projectile;
         private Renderer HacmanRenderer;
         // Start is called before the first frame update
         void Start()
         {
             Generator = FindObjectOfType<LevelGeneratorSystem>();
+            CollectionSystem = FindObjectOfType<CollectionSystem>();
             HacmanRenderer = GetComponent<Renderer>();
             
         }
@@ -69,7 +71,9 @@ namespace HacMan_GD07
             if(Pill==null)
             {
                 Debug.Log("Victory!");
-                SceneManager.LoadScene("SampleScene");
+                CollectionSystem.WinPanel.gameObject.SetActive(true);
+                Time.timeScale = 0;
+                
             }
             
         }
